@@ -59,7 +59,13 @@ static void ungetNextChar(void)
 
 /* A lookup table of reserved words */
 //(2) Define a struct called reservedWords, with the appropriate size, in C that represents the C- reserved words
-
+static struct
+{ char* str;
+  TokenType tok;
+} reservedWords[MAXRESERVED]
+= {{"if",IF},{"else",ELSE},
+  {"int",INT},{"return",RETURN},{"void",VOID},
+  {"while",WHILE}};
 
 /* Looks up an ID to see if it is a reserved word */
 //(3) Define the function ReservedLookupB(), which search regular IDs againist the C- reserved words
@@ -120,8 +126,39 @@ TokenType getToken(void)
 					currentToken = PLUS;
                break;
                //(7) create cases to handle operators: -, *, ;, ,. (, ), [, ], {, }
-					
-
+				case '-':
+					currentToken = MINUS;
+					break;
+				case '*':
+					currentToken = TIMES;
+					break;
+				case '/':
+					currentToken = OVER;
+					break;
+				case ';':	
+					currentToken = SEMI;
+					break;
+				case ',':	
+					currentToken = COMMA;
+					break;
+				case '(':	
+					currentToken = LPAREN;
+					break;
+				case ')':
+					currentToken = RPAREN;
+					break;
+				case '[':
+					currentToken = LBRACKET;
+					break;
+				case ']':
+					currentToken = RBRACKET;
+					break;
+				case '{':
+					currentToken = LCURLY;
+					break;
+				case '}':
+					currentToken = RCURLY;
+					break;
 				default:
 					currentToken = ERROR;
 					break;
