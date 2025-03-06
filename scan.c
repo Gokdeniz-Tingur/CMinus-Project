@@ -12,7 +12,7 @@
 
 /* States in scanner DFA */
 //(1)Add you code to define all states that C- DFA needs as an enum type called StateType in C 
-
+typedef enum {START, INLESS, INEQ, INGREATER, INNEQ, ENTERCOMMENT, INCOMMENT, EXITCOMMENT, INNUM, INID, DONE} StateType; 
 
 /* The lexeme of the ID or reserved word */
 char tokenString[MAXTOKENLEN + 1];
