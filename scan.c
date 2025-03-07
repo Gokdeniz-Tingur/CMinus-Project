@@ -9,7 +9,6 @@
 #include "globals.h"
 #include "util.h"
 #include "scan.h"
-
 /* States in scanner DFA */
 //(1)Add you code to define all states that C- DFA needs as an enum type called StateType in C 
 typedef enum {START, INLESS, INEQ, INGREATER, INNEQ, ENTERCOMMENT, INCOMMENT, EXITCOMMENT, INNUM, INID, DONE} StateType; 
@@ -70,7 +69,31 @@ static struct
 /* Looks up an ID to see if it is a reserved word */
 //(3) Define the function ReservedLookupB(), which search regular IDs againist the C- reserved words
 //    Use binary search instead of linear search
+int compareWords(const void *a, const void *b) {
+    return strcmp(((typeof(reservedWords[0])*)a)->str, ((typeof(reservedWords[0])*)b)->str);
+}
 
+static TokenType ReservedLookupB(int low, int high, char *s) {
+		static int sorted = 0;
+
+		if (!sorted) {
+			qsort(reservedWords, MAXRESERVED, sizeof(reservedWords[0]), compareWords);
+			sorted = 1; 
+		}
+
+		if (low > high)
+			return ID;
+	
+		int mid = (low + high) / 2;
+		int cmp = strcmp(s, reservedWords[mid].str);
+	
+		if (cmp == 0)
+			return reservedWords[mid].tok;
+		else if (cmp < 0)
+			return reservedLookupB(low, mid - 1, s);
+		else
+			return reservedLookupB(mid + 1, high, s);
+	}
 
 
 /****************************************/
