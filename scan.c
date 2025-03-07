@@ -90,9 +90,9 @@ static TokenType ReservedLookupB(int low, int high, char *s) {
 		if (cmp == 0)
 			return reservedWords[mid].tok;
 		else if (cmp < 0)
-			return reservedLookupB(low, mid - 1, s);
+			return ReservedLookupB(low, mid - 1, s);
 		else
-			return reservedLookupB(mid + 1, high, s);
+			return ReservedLookupB(mid + 1, high, s);
 	}
 
 

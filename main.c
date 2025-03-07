@@ -45,7 +45,7 @@ int TraceCode = FALSE;
 /* error flag to inhibit subsequent passes */
 int Error = FALSE;
 
-main( int argc, char * argv[] )
+int main( int argc, char * argv[] )
 { TreePtr syntaxTree;
   char pgm[120]; /* source code file name */
   if (argc != 2)
