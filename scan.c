@@ -138,7 +138,6 @@ TokenType getToken(void)
 				save = FALSE;
 				state = INNEQ;
 			} else if (c == '/') {
-				save = FALSE;
 				state = ENTERCOMMENT;
 			}
          
@@ -265,20 +264,24 @@ TokenType getToken(void)
 
 		case ENTERCOMMENT:
 			if (c == '*') {
+			    save = FALSE;
 				state = INCOMMENT;
 			} else {
-				state = DONE;
+                ungetNextChar();
+                state = DONE;
 				currentToken = OVER;
 			}
 			break;
 		
 		case INCOMMENT:
 			if (c == '*') {
+			    save = FALSE;
 				state = EXITCOMMENT;
 			}
 			break;
 	
 		case EXITCOMMENT:
+			save = FALSE;
 			if (c == '/') {
 				state = START;
 			} else {

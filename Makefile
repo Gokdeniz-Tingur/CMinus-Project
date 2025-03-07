@@ -1,11 +1,11 @@
 #
-# Makefile for C-
+# Makefile for TINY
 # Gnu C Version
 #
 
 CC = gcc
 
-CFLAGS = 
+CFLAGS = -Wall
 
 OBJS = main.o util.o scan.o
 
@@ -22,13 +22,12 @@ scan.o: scan.c scan.h util.h globals.h
 	$(CC) $(CFLAGS) -c scan.c
 
 clean:
-	-rm cminus
-	-rm $(OBJS)
+	-rm cminus $(OBJS)
 
 run: cminus
-	./cminus gcd.cm
+	./cminus $(CURDIR)/gcd.cm $(INPUTS)
 
 test: cminus
-	./cminus $(CM_FILE)
+	./cminus $(CURDIR)/$(CM_FILE)
 
 all: cminus
