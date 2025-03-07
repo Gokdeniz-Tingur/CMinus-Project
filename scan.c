@@ -96,20 +96,27 @@ TokenType getToken(void)
 		switch (state)
 		{
 		case START:
-			if (c == '<')
-			{
+			if (isdigit(c)) {
+				save = TRUE; // save digits for the number
+				state = INNUM;
+			} else if (isalpha(c)) {
+				save = TRUE; // save letters for the identifier
+				state = INID;
+			} else if (c == '<') {
 				save = FALSE;
 				state = INLESS;
-			}
-			
-         else if (c == '=')
-			{
+			} else if (c == '=') {
 				save = FALSE;
 				state = INEQ;
+			} else if (c == '>') {
+				save = FALSE;
+				state = INGREATER;
+			} else if (c == '!') {
+				save = FALSE;
+				state = INNEQ;
 			}
-         //(4) create the else if branch to handle other two-character operators: >=, !=, 
+         
          //(5) create the else if branch to handle the comments: /* */
-         //(6) create the else if branch to handle the ID and NUM
 
 			else if ((c == ' ') || (c == '\t') || (c == '\n') || (c == '\r')) //white spaces 
 				save = FALSE;
@@ -168,10 +175,9 @@ TokenType getToken(void)
 
 		case INLESS:
 			state = DONE;
-			if (c == '=')
+			if (c == '=') {			// <=
 				currentToken = LE;
-			else
-			{
+			} else {				// <
 				ungetNextChar();
 				currentToken = LT;
 			}
@@ -179,28 +185,35 @@ TokenType getToken(void)
 
 		//(8) handle the case of INEQ
       case INEQ:
-			if(c == '=')
-			{
+			state = DONE;
+			if(c == '=') {			// ==
 				currentToken = EQ;
-
-			}
-			else
-			{
+			} else {				// =
 				ungetNextChar();
 				currentToken = ASSIGN;
-				save = FALSE;
-           		currentToken = ERROR;
 			}
 			break;
 
 		//(9) handle the case of INGREATER
       case INGREATER:
-
+			state = DONE;
+			if (c == '=') {			// >=
+				currentToken = GE;
+			} else {				// >
+				ungetNextChar();
+				currentToken = GT;
+			}
 			break;
 
 		//(10) handle the case of INNEQ
       case INNEQ:
-
+			state = DONE;
+			if (c == '=') {
+				currentToken = NE; // "!="
+			} else {
+				ungetNextChar();
+				currentToken = ERROR; //just "!" is invalid
+			}
 			break;
 		
 
