@@ -1,5 +1,5 @@
 #
-# Makefile for TINY
+# Makefile for C-
 # Gnu C Version
 #
 
@@ -25,7 +25,7 @@ clean:
 	-rm cminus $(OBJS)
 
 run: cminus
-	./cminus $(CURDIR)/gcd.cm $(INPUTS)
+	./cminus $(CURDIR)/gcd.cm
 
 test: cminus
 	./cminus $(CURDIR)/$(CM_FILE)
