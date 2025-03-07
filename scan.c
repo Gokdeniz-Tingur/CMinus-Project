@@ -114,6 +114,9 @@ TokenType getToken(void)
 			} else if (c == '!') {
 				save = FALSE;
 				state = INNEQ;
+			} else if (c == '/') {
+				save = FALSE;
+				state = ENTERCOMMENT;
 			}
          
          //(5) create the else if branch to handle the comments: /* */
@@ -139,9 +142,7 @@ TokenType getToken(void)
 				case '*':
 					currentToken = TIMES;
 					break;
-				case '/':
-					currentToken = OVER;
-					break;
+
 				case ';':	
 					currentToken = SEMI;
 					break;
@@ -237,7 +238,30 @@ TokenType getToken(void)
 				state = DONE;
 				currentToken = ID;
 			}
-         break;
+         	break;
+
+		case ENTERCOMMENT:
+			if (c == '*') {
+				state = INCOMMENT;
+			} else {
+				state = DONE;
+				currentToken = OVER;
+			}
+			break;
+		
+		case INCOMMENT:
+			if (c == '*') {
+				state = EXITCOMMENT;
+			}
+			break;
+	
+		case EXITCOMMENT:
+			if (c == '/') {
+				state = START;
+			} else {
+				state = INCOMMENT;
+			}
+			break;
 
 		case DONE:
 			break;
