@@ -179,7 +179,18 @@ TokenType getToken(void)
 
 		//(8) handle the case of INEQ
       case INEQ:
+			if(c == '=')
+			{
+				currentToken = EQ;
 
+			}
+			else
+			{
+				ungetNextChar();
+				currentToken = ASSIGN;
+				save = FALSE;
+           		currentToken = ERROR;
+			}
 			break;
 
 		//(9) handle the case of INGREATER
@@ -195,12 +206,24 @@ TokenType getToken(void)
 
 		//(11) handle the case of INNUM
       case INNUM:
-
+			if (!isdigit(c))
+			{
+				ungetNextChar();
+				save = FALSE;
+				state = DONE;
+				currentToken = NUM;
+			}
 			break;
 
 		//(12) handle the case of INID 
       case INID:
-      
+			if (!isalpha(c))
+			{
+				ungetNextChar();
+				save = FALSE;
+				state = DONE;
+				currentToken = ID;
+			}
          break;
 
 		case DONE:
