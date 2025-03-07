@@ -1,7 +1,7 @@
 /***********************************************************/
 /*    FILE: scan.c                                         */
 /* PURPOSE: The scanner implementation for the C- compiler */
-/* AUTHORS: YOUR NAMES HERE                                */
+/* AUTHORS: Derek Trevens & Gokdeniz Tingur                */
 /*  COURSE: COMSC 440.01 24/SP                             */
 /*    DATE: Feb 26, 2024                                */
 /***********************************************************/
