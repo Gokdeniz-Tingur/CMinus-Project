@@ -333,16 +333,16 @@ TreePtr selection_stmt(void){
   TreePtr t = newStmtNode(IfK);
   match(IF);                        // if
   match(LPAREN);                    // (
-  if (t) {
+  if (t != NULL) {
     t -> child[0] = expression();   // condition
   }
   match(RPAREN);                    // )
-  if (t) {
+  if (t != NULL) {
     t -> child[1] = statement();    //do the if statement
   }
   if (token == ELSE) {
     match(ELSE);                    // else
-    if (t) {
+    if (t != NULL) {
       t -> child[2] = statement();  // do the else statement
     }
   }
