@@ -39,6 +39,15 @@ static void syntaxError(char * message)
 
 //**************
 //(1) add the match function here to get next token and print error message if needed
+void match(TokenType expected)
+{ if (token == expected)
+  { token = getToken();
+  }
+  else
+  { syntaxError("unexpected token -> ");
+    printToken(token,tokenString);
+  }
+} /* match */
 
 static int isType( TokenType token)
 { return (token==VOID)||(token==INT);
