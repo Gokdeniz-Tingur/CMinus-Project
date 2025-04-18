@@ -428,7 +428,7 @@ TreePtr additive_expression(void){
   TreePtr t = term();           // first term
   while ((token == PLUS) || (token == MINUS)) {
     TreePtr p = newExpNode(OpK);
-    if (p) {
+    if (p != NULL) {
       p -> attr.op = token;     // save the operator
       p -> child[0] = t;        // left leaf becomes first expression
       match(token);             // match + or -
@@ -445,20 +445,19 @@ TreePtr additive_expression(void){
 TreePtr term(void)
 {
   TreePtr t = factor(); // Parse the first factor
-  while ((token == TIMES) || (token == OVER)) // Check for multiplication or division operators
+  while ((token == TIMES) || (token == OVER)) // Handle * and /
   {
-    TreePtr p = newExpNode(OpK); // Create a new operator node
+    TreePtr p = newExpNode(OpK);
     if (p != NULL)
     {
-      p->attr.op = token; // Set the operator
-      p->child[0] = t;    // Attach the current term as the left child
-      t = p;              // Update the current term to the new operator node
+      p->attr.op = token; // Save the operator
+      p->child[0] = t;    // Attach the left-hand side
+      match(token);       // Match the operator
+      p->child[1] = factor(); // Parse the right-hand side
+      t = p;              // Update the current tree
     }
-    match(token);         // Match the operator
-    if (t != NULL)
-      t->child[1] = factor(); // Parse the next factor and attach as the right child
   }
-  return t; // Return the syntax tree for the term
+  return t;
 } /* term */
 
 TreePtr factor(void)
