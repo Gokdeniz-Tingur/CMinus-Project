@@ -421,9 +421,22 @@ TreePtr simple_expression(void)
 //**********************************************
 //(5) complete the function for additive-expression, which follows the grammar rule of line 20 on p492 of Louden textbook
 TreePtr additive_expression(void){
-
-
- 
+  /*
+  20. simple-expression -> additive-expression relop additive-expression
+                              | additive-expression
+  */
+  TreePtr t = term();           // first term
+  while ((token == PLUS) || (token == MINUS)) {
+    TreePtr p = newExpNode(OpK);
+    if (p) {
+      p -> attr.op = token;     // save the operator
+      p -> child[0] = t;        // left leaf becomes first expression
+      match(token);             // match + or -
+      p -> child[1] = term();   // right leaf becomes second term
+      t = p;                    // traverse into the subtree
+    }
+  }
+  return t;
 } /* additive_expression */
 
 //**********************************************
