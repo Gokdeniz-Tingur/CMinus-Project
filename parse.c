@@ -352,24 +352,31 @@ TreePtr selection_stmt(void){
 //(3) complete the function for iteration_stmt(), which follows the grammar rule of line 16 on p492 of the Louden textbook
 TreePtr iteration_stmt(void)
 { 
-TreePtr t,p;
-  match(WHILE);
-  match(LPAREN);
-  t = expression();
-  match(RPAREN);
-  p = statement();
-  if (t != NULL && p != NULL)
-  { t->child[0] = p;
-    return t;
+  TreePtr t = newStmtNode(WhileK); // Create a node for the while statement
+  match(WHILE);                   // Match the 'while' keyword
+  match(LPAREN);                  // Match '('
+  if (t != NULL) {
+    t->child[0] = expression();   // Parse the condition and attach as the first child
   }
-  else return NULL;
-
+  match(RPAREN);                  // Match ')'
+  if (t != NULL) {
+    t->child[1] = statement();    // Parse the body and attach as the second child
+  }
+  return t;                       // Return the syntax tree node
 } /* iteration_stmt */
 
 //(4) complete the function for return_stmt(), which follows the grammar rul of line 17 on p492 of the Louden textbook
 TreePtr return_stmt(void)
 { 
-
+  TreePtr t = newStmtNode(ReturnK); // Create a new node for the return statement
+  match(RETURN);                   // Match the 'return' keyword
+  if (token != SEMI)               // Check if there is an expression
+  { 
+    if (t != NULL)
+      t->child[0] = expression();  // Parse the expression and attach it as a child
+  }
+  match(SEMI);                     // Match the semicolon
+  return t;                        // Return the syntax tree node
 } /* return_stmt */
 
 TreePtr expression(void)
@@ -422,10 +429,23 @@ TreePtr additive_expression(void){
 //**********************************************
 //(6) complete the function for term(), which follows the grammar rule of line 24 on p492 of Louden textbook
 
-TreePtr term(void){
-
-
- 
+TreePtr term(void)
+{
+  TreePtr t = factor(); // Parse the first factor
+  while ((token == TIMES) || (token == OVER)) // Check for multiplication or division operators
+  {
+    TreePtr p = newExpNode(OpK); // Create a new operator node
+    if (p != NULL)
+    {
+      p->attr.op = token; // Set the operator
+      p->child[0] = t;    // Attach the current term as the left child
+      t = p;              // Update the current term to the new operator node
+    }
+    match(token);         // Match the operator
+    if (t != NULL)
+      t->child[1] = factor(); // Parse the next factor and attach as the right child
+  }
+  return t; // Return the syntax tree for the term
 } /* term */
 
 TreePtr factor(void)
