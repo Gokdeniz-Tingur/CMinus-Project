@@ -1,12 +1,12 @@
  /*************************************************************/ 
  /*   File: GCD.CM                                            */ 
  /*   A C- program to perform Euclid's Algorithm              
- /*     to compute gcd                                        */ */            
+ /*     to compute gcd                                        */           
  /*************************************************************/ 
 
 int gcd (int u, int v) 
 { if (v == 0) return u ;    
-else return gcd(v,u-u/v*v); 10         
+else return gcd(v,u-u/v*v);         
  /* u-u/v*v == u mod v */ 
 } 
 

@@ -21,7 +21,7 @@ util.o: util.c util.h globals.h
 scan.o: scan.c scan.h util.h globals.h
 	$(CC) $(CFLAGS) -c scan.c
 
-parse.o: parce.c parse.h globals.h scan.h util.h
+parse.o: parse.c parse.h globals.h scan.h util.h
 	$(CC) $(CFLAGS) -c parse.c
 
 clean:
