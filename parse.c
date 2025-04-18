@@ -321,7 +321,8 @@ TreePtr statement(void)
 //**************************************
 //(2) complete the function for selection_stmt(), which follows the grammar rule of line 15 on p492 of Louden textbook
 TreePtr selection_stmt(void){
-
+  TreePtr t,p,q;
+  match(IF);
 
 
 } /* selection_stmt */
