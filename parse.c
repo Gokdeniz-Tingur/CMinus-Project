@@ -321,8 +321,7 @@ TreePtr statement(void)
 //**************************************
 //(2) complete the function for selection_stmt(), which follows the grammar rule of line 15 on p492 of Louden textbook
 TreePtr selection_stmt(void){
-  TreePtr t,p,q;
-  match(IF);
+  
 
 
 } /* selection_stmt */
@@ -330,7 +329,17 @@ TreePtr selection_stmt(void){
 //(3) complete the function for iteration_stmt(), which follows the grammar rule of line 16 on p492 of the Louden textbook
 TreePtr iteration_stmt(void)
 { 
-
+TreePtr t,p;
+  match(WHILE);
+  match(LPAREN);
+  t = expression();
+  match(RPAREN);
+  p = statement();
+  if (t != NULL && p != NULL)
+  { t->child[0] = p;
+    return t;
+  }
+  else return NULL;
 
 } /* iteration_stmt */
 
