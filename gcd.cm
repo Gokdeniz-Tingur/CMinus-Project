@@ -1,6 +1,6 @@
  /*************************************************************/ 
  /*   File: GCD.CM                                            */ 
- /*   A C- program to perform Euclid's Algorithm              
+ /*   A C- program to perform Euclid's Algorithm              */
  /*     to compute gcd                                        */           
  /*************************************************************/ 
 
