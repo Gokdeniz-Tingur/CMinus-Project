@@ -318,13 +318,35 @@ TreePtr statement(void)
   return t;
 } /* statememt */
 
+/* REMINDER FROM GLOBALS.H: 
+the types of statements are:
+typedef enum {IfK,ReturnK,WhileK,CmpdK} StmtKind;
+*/
+
 //**************************************
 //(2) complete the function for selection_stmt(), which follows the grammar rule of line 15 on p492 of Louden textbook
 TreePtr selection_stmt(void){
-  TreePtr t,p,q;
-  match(IF);
-
-
+  /*
+  15. selection-stmt -> if ( expression) statement
+                        | if ( expression ) statement else statement
+  */
+  TreePtr t = newStmtNode(IfK);
+  match(IF);                        // if
+  match(LPAREN);                    // (
+  if (t) {
+    t -> child[0] = expression();   // condition
+  }
+  match(RPAREN);                    // )
+  if (t) {
+    t -> child[1] = statement();    //do the if statement
+  }
+  if (token == ELSE) {
+    match(ELSE);                    // else
+    if (t) {
+      t -> child[2] = statement();  // do the else statement
+    }
+  }
+  return t;
 } /* selection_stmt */
 
 //(3) complete the function for iteration_stmt(), which follows the grammar rule of line 16 on p492 of the Louden textbook
