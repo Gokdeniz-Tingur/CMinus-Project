@@ -1,7 +1,10 @@
 /*************************************************************/
 /*   File: parse.c                                           */
 /*   The parser implementation for the C-Minus compiler      */
-/*                                                           */
+/*   Group members: Gokdeniz Tingur & Derek Trevens          */
+/*   Course: COMSC.440.01-25/SP LangTranslation/Compiler Dsgn*/
+/*   Date: 4/18/2025                                         */
+/*   Purpose: To implement recursive-descent into c-minus    */
 /*************************************************************/
 
 #include "globals.h"
