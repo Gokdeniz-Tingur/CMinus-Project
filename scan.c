@@ -137,8 +137,16 @@ TokenType getToken(void)
 			} else if (c == '!') {
 				save = FALSE;
 				state = INNEQ;
-			} else if (c == '/') {
-				state = ENTERCOMMENT;
+			}else if (c == '/') {
+				int nextChar = getNextChar();
+				if (nextChar == '*') {
+					save = FALSE;
+					state = INCOMMENT;
+				} else {
+					ungetNextChar();
+					state = DONE;
+					currentToken = OVER;
+				}
 			}
          
          //(5) create the else if branch to handle the comments: /* */
@@ -274,8 +282,9 @@ TokenType getToken(void)
 			break;
 		
 		case INCOMMENT:
+			save = FALSE;
 			if (c == '*') {
-			    save = FALSE;
+			    
 				state = EXITCOMMENT;
 			}
 			break;
@@ -284,7 +293,8 @@ TokenType getToken(void)
 			save = FALSE;
 			if (c == '/') {
 				state = START;
-			} else {
+			} else if(c!= '*') {
+		
 				state = INCOMMENT;
 			}
 			break;
