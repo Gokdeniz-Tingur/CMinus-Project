@@ -353,30 +353,30 @@ TreePtr selection_stmt(void){
 TreePtr iteration_stmt(void)
 { 
   TreePtr t = newStmtNode(WhileK); // Create a node for the while statement
-  match(WHILE);                   // Match the 'while' keyword
-  match(LPAREN);                  // Match '('
+  match(WHILE);                   // 'while'
+  match(LPAREN);                  // '('
   if (t != NULL) {
     t->child[0] = expression();   // Parse the condition and attach as the first child
   }
-  match(RPAREN);                  // Match ')'
+  match(RPAREN);                  // ')'
   if (t != NULL) {
     t->child[1] = statement();    // Parse the body and attach as the second child
   }
-  return t;                       // Return the syntax tree node
+  return t;                      
 } /* iteration_stmt */
 
 //(4) complete the function for return_stmt(), which follows the grammar rul of line 17 on p492 of the Louden textbook
 TreePtr return_stmt(void)
 { 
   TreePtr t = newStmtNode(ReturnK); // Create a new node for the return statement
-  match(RETURN);                   // Match the 'return' keyword
-  if (token != SEMI)               // Check if there is an expression
+  match(RETURN);                   // 'return' 
+  if (token != SEMI)               
   { 
     if (t != NULL)
       t->child[0] = expression();  // Parse the expression and attach it as a child
   }
-  match(SEMI);                     // Match the semicolon
-  return t;                        // Return the syntax tree node
+  match(SEMI);                     //semicolon
+  return t;                      
 } /* return_stmt */
 
 TreePtr expression(void)
