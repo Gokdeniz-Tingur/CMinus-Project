@@ -1,4 +1,3 @@
-
 /*************************************************************/
 /*   File: symtab.c                                          */
 /*   Symbol table implementation for the C-Minus compiler    */
@@ -85,12 +84,9 @@ void st_exitScope(void)
     }
 
     free(oldScope);
-    if (currentNestLevel > 0)
-        {
-            currentNestLevel--;
-            printf("Exiting scope and decrementing nestLevel\n");
-            printf("New nesting level = %d\n", currentNestLevel);
-        }
+    if (currentNestLevel > 0) {
+      currentNestLevel--;
+    }
   }
 }
 
@@ -130,8 +126,6 @@ TreePtr st_lookup ( char * name )
     //               else move on to the next table content
     while (currentBucket != NULL) {
       if (strcmp(name, currentBucket -> defnode -> attr.name) == 0) {
-        printf("Lookup of identifier %s at line %d\n", name, currentBucket -> defnode -> lineno);
-        printf("Found on line %d\n", currentBucket -> defnode -> lineno);
         return currentBucket -> defnode;
       }
       currentBucket = currentBucket -> next;
@@ -141,63 +135,3 @@ TreePtr st_lookup ( char * name )
   //3-4 return NULL if not found; 
   return NULL;
 }  /* st_lookup */
-
-
-void printSymTab(FILE * listing) {
-  int i;
-  fprintf(listing, "Symbol table:\n");
-  fprintf(listing, "Variable Name   Type    Scope   Line Numbers\n");
-  fprintf(listing, "-------------   ----    -----   ------------\n");
-
-  TableList currentTable = symTab;
-  while (currentTable != NULL) {
-    for (i = 0; i < SIZE; i++) {
-      BucketList currentBucket = currentTable -> t[i];
-      while (currentBucket != NULL) {
-        TreePtr node = currentBucket -> defnode;
-        fprintf(listing, "%-14s ", node -> attr.name);
-        if (node -> nodekind == DeclK) {
-          switch(node -> kind.decl) {
-            case VarK:
-              if (node -> type == INT) {
-                fprintf(listing, "Int     ");
-              } else if (node -> type == VOID) {
-                fprintf(listing, "Void    ");
-              } else if (node -> type == INT && node -> size > 0) {
-                fprintf(listing, "IntArray");
-              } else {
-                fprintf(listing, "Unknown ");
-              }
-              break;
-            case FunK:
-              if (node -> type == INT) {
-                fprintf(listing, "Int func");
-              } else if (node -> type == VOID) {
-                fprintf(listing, "Void func");
-              } else {
-                fprintf(listing, "Unknown func");
-              }
-              break;
-            case ParamK:
-              if (node -> type == INT && node -> size == 0) {
-                fprintf(listing, "Int param");
-              } else if (node -> type == VOID) {
-                fprintf(listing, "Void param");
-              } else if (node -> type == INT && node -> size > 0) {
-                fprintf(listing, "IntArray param");
-              }
-              break;
-            default:
-              fprintf(listing, "Unknown ");
-              break;
-          }
-        } else {
-          fprintf(listing, "Unknown ");
-        }
-        fprintf(listing, "   %-5d   %d\n", node -> nestLevel, node -> lineno);
-        currentBucket = currentBucket -> next;
-      }
-    }
-    currentTable = currentTable -> next;
-  }
-}
