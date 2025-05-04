@@ -21,7 +21,12 @@
 static int hash ( char * key )
 { int temp = 0;
     //(1): add code here to complete the implementation of the hash function
+  int i = 0;
 
+  while (key[i] != '\0') {
+    temp = ((temp << SHIFT) + key[i]) % SIZE;
+    i++;
+  }
   return temp;
 }
 
@@ -44,6 +49,7 @@ typedef struct TableListRec
 
 /* The actual symbol table */
 static TableList symTab = NULL; /* starts out empty */
+static int currentNestLevel = 0;
 
 /* Procedure st_enterScope starts a new scope
  * returns 0 if memory allocation fails, else 1
@@ -65,6 +71,25 @@ void st_exitScope(void)
 { 
 
 	//(2): Add code to handle the case when a scope needs to be deleted
+  if (symTab != NULL) {
+    TableList oldScope = symTab;
+    symTab = symTab -> next;
+
+    for (int i = 0; i < SIZE; i++) {
+      BucketList current = oldScope -> t[i];
+      while (current != NULL) {
+        BucketList temp = current;
+        current = current -> next;
+        free(temp);
+      }
+    }
+
+    free(oldScope);
+    currentNestLevel--;
+
+    printf("Existing scope and decrementing nestLevel\n");
+    printf("New nesting level = %d\n", currentNestLevel);
+  }
 }
 
 /* Procedure st_insert inserts def nodes from
@@ -88,17 +113,34 @@ TreePtr st_lookup ( char * name )
 { 
 
   //(3) Add code to handle the case of lookup process
-  
-  //3-1 calc the hash value of the name 
-  //3-2 create a temp variable (TableList) and use it to scan through the whole table looking for a match 
-  //3-3 while loop to go through the table
-  //    for each iteration of the loop
-  //       find each hash table content - should be a BucketList
-  //       compare the name of the content with the name looking for (defnode->arrt.name)
-  //       if name is found, return the defnode of the current BucketList
-  //               else move on to the next table content
-  //3-4 return NULL if not found; 
+  //3-1 calc the hash value of the name
+  int h = hash(name);
 
+  //3-2 create a temp variable (TableList) and use it to scan through the whole table looking for a match 
+  TableList currentTable = symTab;
+
+  //3-3 while loop to go through the table
+  while(currentTable != NULL) {
+  //       find each hash table content - should be a BucketList
+    BucketList currentBucket = currentTable -> t[h];
+    //       compare the name of the content with the name looking for (defnode->arrt.name)
+    //       if name is found, return the defnode of the current BucketList
+    //               else move on to the next table content
+    while (currentBucket != NULL) {
+      if (strcmp(name, currentBucket -> defnode -> attr.name) == 0) {
+        printf("Lookup of identifier %s at line %d\n", name, currentBucket -> defnode -> lineno);
+        printf("Found on line %d\n", currentBucket -> defnode -> lineno);
+        return currentBucket -> defnode;
+      }
+      currentBucket = currentBucket -> next;
+    }
+    currentTable = currentTable -> next;
+  }
+  //3-4 return NULL if not found; 
+  return NULL;
 }  /* st_lookup */
 
 
+void printSymTab(FILE * listing) {
+  
+}
