@@ -7,7 +7,7 @@ CC = gcc
 
 CFLAGS = -Wall
 
-OBJS = main.o util.o scan.o parse.o
+OBJS = main.o util.o scan.o parse.o symtab.o analyze.o
 
 cminus: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o cminus
@@ -23,6 +23,12 @@ scan.o: scan.c scan.h util.h globals.h
 
 parse.o: parse.c parse.h globals.h scan.h util.h
 	$(CC) $(CFLAGS) -c parse.c
+
+symtab.o: symtab.c symtab.h globals.h
+	$(CC) $(CFLAGS) -c symtab.c
+
+analyze.o: analyze.c analyze.h globals.h symtab.h
+	$(CC) $(CFLAGS) -c analyze.c
 
 clean:
 	-rm cminus $(OBJS)
