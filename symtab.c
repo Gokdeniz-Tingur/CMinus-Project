@@ -85,10 +85,12 @@ void st_exitScope(void)
     }
 
     free(oldScope);
-    currentNestLevel--;
-
-    printf("Existing scope and decrementing nestLevel\n");
-    printf("New nesting level = %d\n", currentNestLevel);
+    if (currentNestLevel > 0)
+        {
+            currentNestLevel--;
+            printf("Exiting scope and decrementing nestLevel\n");
+            printf("New nesting level = %d\n", currentNestLevel);
+        }
   }
 }
 
