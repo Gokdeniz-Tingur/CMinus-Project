@@ -24,7 +24,7 @@ static int hash ( char * key )
 
   while (key[i] != '\0') {
     temp = ((temp << SHIFT) + key[i]) % SIZE;
-    i++;
+    ++i;
   }
   return temp;
 }
